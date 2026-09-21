@@ -243,9 +243,6 @@ LIMIT 10;
 
 ## 🚀 How to Run
 1. Clone this repository to your local machine:
-   ```bash
-   git clone [https://github.com/](https://github.com/)<YOUR_USERNAME>/sql_project_data_job_analysis.git
-   ```
 2. Initialize database schema:
    - Run `sql_load/1_create_database.sql`
    - Run `sql_load/2_create_tables.sql`
