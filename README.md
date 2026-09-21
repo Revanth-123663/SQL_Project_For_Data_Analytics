@@ -3,7 +3,7 @@
 ## 📌 Introduction
 Driven by a quest to navigate the data analyst job market effectively, this project explores **top-paying jobs**, **in-demand skills**, and **where high demand meets high salary** in data analytics.
 
-The analysis uses real-world tech job postings to evaluate what employers are seeking and paying for in data roles.
+The analysis is based on real-world tech job postings to evaluate what employers are seeking and paying for in data roles.
 
 ---
 
@@ -16,10 +16,10 @@ The analysis uses real-world tech job postings to evaluate what employers are se
 
 ---
 
-## 🛠️ Tools & Technologies
-- **SQL (PostgreSQL):** Primary query engine used for data extraction, aggregations, CTEs, and window logic.
-- **DBeaver / VS Code:** Database management and SQL query development.
-- **Git & GitHub:** Version control, project tracking, and portfolio hosting.
+## 🛠️ Tools Used
+- **SQL (PostgreSQL):** Primary query engine used for data extraction, aggregations, CTEs, and filtering.
+- **VS Code / DBeaver:** Database management and query execution.
+- **Git & GitHub:** Version control, documentation, and portfolio hosting.
 
 ---
 
@@ -48,8 +48,19 @@ WHERE
 ORDER BY
     salary_year_avg DESC
 LIMIT 10;
+```
 
-Key Findings:Top 10 salaries range from $184,000 to $650,000, showing extreme upside for specialized and senior analyst positions.High compensation is not exclusive to Big Tech; financial institutions, healthcare firms, and startups offer competitive pay for remote talent.2. Skills Required for Top-Paying JobsExamines the specific tools and languages listed by the highest-paying roles.SQLWITH top_paying_jobs AS (
+**Key Findings:**
+- Top 10 remote salaries range from **$184,000 to $650,000**, showing extreme upside for specialized and senior analyst roles.
+- High compensation is not exclusive to Big Tech; startups, financial institutions, and healthcare firms offer competitive remote salaries.
+
+---
+
+### 2. Skills Required for Top-Paying Jobs
+Examines the specific tools and languages listed across the top 10 highest-paying roles.
+
+```sql
+WITH top_paying_jobs AS (
     SELECT
         job_id,
         job_title,
@@ -78,7 +89,19 @@ INNER JOIN skills_dim
     ON skills_job_dim.skill_id = skills_dim.skill_id
 ORDER BY
     salary_year_avg DESC;
-Key Findings:SQL is required in 8 of the 10 top postings.Python (7/10) and Tableau (6/10) are the dominant companion tools for premium roles.3. Most In-Demand Skills for Data AnalystsCalculates posting frequency across all remote Data Analyst roles.SQLSELECT 
+```
+
+**Key Findings:**
+- **SQL** is required in 8 of the 10 top postings.
+- **Python** (7/10) and **Tableau** (6/10) are the dominant companion tools for premium roles.
+
+---
+
+### 3. Most In-Demand Skills for Data Analysts
+Calculates posting frequency across all remote Data Analyst roles.
+
+```sql
+SELECT 
     skills_dim.skills,
     COUNT(skills_job_dim.job_id) AS demand_count
 FROM 
@@ -95,7 +118,27 @@ GROUP BY
 ORDER BY
     demand_count DESC
 LIMIT 5;
-SkillDemand CountSQL7,291Excel4,611Python4,330Tableau3,745Power BI2,609Key Findings:Core data querying (SQL) and spreadsheet analysis (Excel) remain fundamental entry tickets.Modern analysts are expected to pair querying with a visualization layer (Tableau / Power BI) and programming (Python).4. Top Skills Based on SalaryIdentifies which technical skills command the highest average annual salaries.SQLSELECT 
+```
+
+| Skill | Demand Count |
+|---|---|
+| **SQL** | 7,291 |
+| **Excel** | 4,611 |
+| **Python** | 4,330 |
+| **Tableau** | 3,745 |
+| **Power BI** | 2,609 |
+
+**Key Findings:**
+- **SQL** and **Excel** remain fundamental baseline requirements for analyst positions.
+- Pairing data manipulation (**Python**) with visual storytelling (**Tableau / Power BI**) covers the vast majority of market demand.
+
+---
+
+### 4. Top Skills Based on Salary
+Identifies which technical skills command the highest average annual salaries.
+
+```sql
+SELECT 
     skills_dim.skills,
     ROUND(AVG(job_postings_fact.salary_year_avg), 0) AS avg_salary
 FROM 
@@ -113,7 +156,32 @@ GROUP BY
 ORDER BY
     avg_salary DESC
 LIMIT 10;
-SkillAverage Salary ($)PySpark$208,172Bitbucket$189,155Couchbase$160,515Watson$160,515DataRobot$155,486GitLab$154,500Swift$153,750Jupyter$152,777Pandas$151,821Elasticsearch$145,000Key Findings:Big Data & Distributed Computing: PySpark tops the list above $200k/year.Engineering Crossover: Version control and CI/CD tools (GitLab, Bitbucket) command high wages, reflecting demand for analysts who follow software development practices.5. Most Optimal Skills to Learn (High Demand + High Pay)Pinpoints the sweet spot by filtering for skills with high posting volume (>10 mentions) and ordering by average salary.SQLWITH skills_demand AS (
+```
+
+| Skill | Average Salary ($) |
+|---|---|
+| **PySpark** | $208,172 |
+| **Bitbucket** | $189,155 |
+| **Couchbase** | $160,515 |
+| **Watson** | $160,515 |
+| **DataRobot** | $155,486 |
+| **GitLab** | $154,500 |
+| **Swift** | $153,750 |
+| **Jupyter** | $152,777 |
+| **Pandas** | $151,821 |
+| **Elasticsearch** | $145,000 |
+
+**Key Findings:**
+- **Big Data & Distributed Computing:** PySpark tops the list above $200,000/year.
+- **Engineering Crossover:** Version control and CI/CD tools (GitLab, Bitbucket) command high wages, reflecting demand for analysts who follow software engineering practices.
+
+---
+
+### 5. Most Optimal Skills to Learn (High Demand + High Pay)
+Pinpoints the intersection of high demand (>10 postings) and above-average compensation.
+
+```sql
+WITH skills_demand AS (
     SELECT 
         skills_dim.skill_id,
         skills_dim.skills,
@@ -162,4 +230,24 @@ ORDER BY
     average_salary.avg_salary DESC,
     skills_demand.demand_count DESC
 LIMIT 10;
-📈 Strategic TakeawaysThe Core Stack: Prioritize SQL and Excel first—they appear in the overwhelming majority of job openings.The Growth Lever: Add Python and Tableau to cross into six-figure roles and expand into advanced reporting.The Salary Multiplier: Learn big data and cloud tools (PySpark, Snowflake, Databricks) to stand out in senior, high-paying enterprise analytics teams
+```
+
+---
+
+## 📈 Strategic Takeaways
+1. **The Core Stack:** Prioritize **SQL** and **Excel** first—they represent the largest volume of hiring needs.
+2. **The Growth Lever:** Learn **Python** and **Tableau** to access senior-level opportunities and automated workflows.
+3. **The Salary Multiplier:** Specialize in big data and cloud platforms (**PySpark, Snowflake, Databricks**) to capture top-tier enterprise compensation.
+
+---
+
+## 🚀 How to Run
+1. Clone this repository to your local machine:
+   ```bash
+   git clone [https://github.com/](https://github.com/)<YOUR_USERNAME>/sql_project_data_job_analysis.git
+   ```
+2. Initialize database schema:
+   - Run `sql_load/1_create_database.sql`
+   - Run `sql_load/2_create_tables.sql`
+3. Load the dataset CSV files into PostgreSQL.
+4. Execute individual query scripts inside the `project_sql/` directory.
